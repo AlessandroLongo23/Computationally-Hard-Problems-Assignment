@@ -5,7 +5,6 @@ class Problem:
         self.k, self.s, self.t, self.R = problem_data
 
     def preprocess(self, verbose: bool = False):
-        # print the stats before and after the preprocessing
         if verbose: 
             before_tlen, before_rlen, before_ravglen = self.get_stats()
 
