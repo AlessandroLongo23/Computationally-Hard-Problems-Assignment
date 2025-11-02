@@ -1,6 +1,15 @@
+from lib.Clause import Clause
+
 class Reader:
     def __init__(self):
         pass
+
+    def read_from_file(self, file_path):
+        pass 
+
+class SWEReader(Reader):
+    def __init__(self):
+        super()
 
     def read_from_file(self, file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
@@ -26,3 +35,25 @@ class Reader:
 
         # return the results
         return k, s, t, R
+
+class OITReader(Reader):
+    def __init__(self):
+        super()
+
+    def read_from_file(self, file_path):
+        with open(file_path, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+
+        # then we have the string s
+        s: str = lines[0].strip()
+        c = s.split("#")
+        clauses = []
+        for clause in c:
+            ls = clause.split(',')
+            literals = {}
+            for literal in ls:
+                literals[abs(int(literal))] = int(literal) > 0 
+            clauses.append(Clause(literals))
+
+        # return the results
+        return clauses

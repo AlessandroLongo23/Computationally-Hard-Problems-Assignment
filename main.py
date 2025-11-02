@@ -1,13 +1,17 @@
-from lib.Reader import Reader
+from lib.Reader import SWEReader, OITReader
 from lib.Problem import Problem
 from lib.Assignment import Assignment
 from lib.Solver import Solver
+from lib.Translator import Translator
 
-reader = Reader()
+reader = OITReader()
 
-problem_data = reader.read_from_file('tests/test5.swe')
+oit_problem_data = reader.read_from_file('tests/1-in-3/test0.oit')
 
-problem = Problem(problem_data)
+translator = Translator()
+swe_problem_data = translator.to_swe(oit_problem_data)
+
+problem = Problem(swe_problem_data)
 
 problem.preprocess(verbose=True)
 
@@ -20,5 +24,12 @@ if solution is None:
 else:
     print("Solution found:")
     problem.evaluate_assignment(solution)
+    
+    # Translate back to OIT format
+    oit_solution = translator.from_swe(solution)
+    print("\nOIT variable assignments:")
+    for var_id in sorted(oit_solution.keys()):
+        value = "1" if oit_solution[var_id] else "0"
+        print(f"  u{var_id} = {value}")
 
 solver.print_stats()
